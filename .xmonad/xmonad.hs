@@ -16,6 +16,8 @@ import XMonad.Layout.Spacing
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Gaps
 
+import XMonad.Actions.CycleWS
+
 import Graphics.X11.ExtraTypes.XF86
 import System.Exit
 import Control.Monad
@@ -39,7 +41,7 @@ web_browser			= spawn "librewolf"
 
 -- Rofi Menus
 single_monitor 		= spawn "~/.screenlayout/single-mon.sh"
-tv_monitor 		= spawn "~/.screenlayout/multi-mon.sh"
+tv_monitor 		= spawn "~/.screenlayout/dual-mon-desk.sh"
 invertMonitor1 		= spawn "xrandr-invert-colors -s 0"
 invertMonitor2 		= spawn "xrandr-invert-colors -s 1"
 
@@ -173,12 +175,16 @@ myKeys conf@(XConfig {XMonad.modMask = super}) = M.fromList $
     , ((super,                 xK_Tab), 		windows W.focusDown)
 
     -- Move focus to the next window
-    , ((super,               	xK_j), 		windows W.focusDown)
+    , ((super,                xK_h),    		windows W.focusDown)
     , ((super,                xK_Left), 		windows W.focusDown)
 
     -- Move focus to the previous window
-    , ((super,               	xK_k), 		windows W.focusUp)
+    , ((super,               xK_l),      		windows W.focusUp)
     , ((super,               xK_Right), 		windows W.focusUp)
+
+    -- Move workspaces
+    , ((super,          	xK_j),		prevWS)
+    , ((super,           	xK_k),		nextWS)
 
     -- Swap the focused window with the next window
     , ((super .|. shiftMask, 	xK_j),		windows W.swapDown)
@@ -189,11 +195,11 @@ myKeys conf@(XConfig {XMonad.modMask = super}) = M.fromList $
     , ((super .|. shiftMask, 	xK_Right),	windows W.swapUp)
 
     -- Shrink the master area
-    , ((super,               	xK_h),		sendMessage Shrink)
+    , ((super .|. shiftMask,     xK_h),		sendMessage Shrink)
     , ((super .|. controlMask,   xK_Left),	sendMessage Shrink)
 
     -- Expand the master area
-    , ((super,               	xK_l),		sendMessage Expand)
+    , ((super .|. shiftMask,     xK_l),		sendMessage Expand)
     , ((super .|. controlMask,   xK_Right),	sendMessage Expand)
 
     -- Increment the number of windows in the master area
@@ -238,16 +244,18 @@ myMouseBindings (XConfig {XMonad.modMask = super}) = M.fromList $
                                        >> windows W.shiftMaster))
     ]
 
-myLayout = myTiled ||| myColumn ||| myFull
+myLayout = myTiled ||| myTiled2 ||| myColumn ||| myFull
   where
     withGaps = gaps [(U, 35), (D, 5), (R, 5), (L, 5)]
     tiled = Tall nmaster delta tiled_ratio
+    tiled2 = Tall 1 (3/100) (1/2)
     column = ThreeColMid nmaster delta tiled_ratio
     nmaster = 1
     delta = 3 / 100
     tiled_ratio = 1 / 2
 
     myTiled = withGaps $ smartBorders tiled
+    myTiled2 = withGaps $ smartBorders tiled2
     myColumn = withGaps $ smartBorders column
     myFull = noBorders Full
 
@@ -309,7 +317,7 @@ defaults = def {
         mouseBindings      = myMouseBindings,
 
       -- hooks, layouts
-      -- layoutHook = gaps [(L,0), (R,0), (U,0), (D,0)] $ spacingRaw False (Border 10 0 10 0) True (Border 0 10 0 10) True $ myLayout,
+        -- layoutHook = gaps [(L,0), (R,0), (U,0), (D,0)] $ spacingRaw False (Border 5 0 10 0) True (Border 0 5 0 5) True $ myLayout,
 	manageHook = myManageHook,
 	layoutHook = myLayout,
         handleEventHook    = myEventHook,

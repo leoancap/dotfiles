@@ -13,6 +13,12 @@ for _prs in "${_ps[@]}"; do
 done
 u
 
+# disable middle-mouse click altogether
+xmodmap -e "pointer = 1 25 3 4 5 6 7 8 9 10" & 
+# increase trackpoint speed
+xinput --set-prop 19 'libinput Accel Speed' 1 &
+xinput --set-prop 10 'libinput Accel Speed' 1 &
+
 # set caps to ctrl/Escape
 xset r rate 175 45 &
 setxkbmap us -option 'caps:ctrl_modifier' &
