@@ -1,0 +1,18 @@
+{
+  "diagnostic.errorSign": "❗️",
+  "diagnostic.warningSign": "⚠️ ",
+  "diagnostic.infoSign": "⚠️ ",
+  "coc.source.around.firstMatch": false,
+  "coc.source.buffer.firstMatch": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "reason"
+  ],
+  "languageserver": {
+    //"reason": {
+    //  "command": "/home/leo/work/monorepo/frontend/_opam/bin/ocamllsp",
+    //  "filetypes": [
+    //    "reason"
+    //  ]
+    //}
+  }
+}
