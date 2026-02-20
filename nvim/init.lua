@@ -724,9 +724,9 @@ Plugins.specs = {
 
   -- Themes
   {
-    dir = "~/repos/eink-nvim",  -- local development                                   █
+    "~/dotfiles/nvim/eink",
     config = function()
-      vim.cmd.colorscheme("eink")
+      require("eink").set_eink_theme()
     end,
   },
 
