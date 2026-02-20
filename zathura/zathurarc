@@ -1,0 +1,10 @@
+# Zathura configuration
+
+# Enable copy to clipboard
+set selection-clipboard clipboard
+
+# Open document in fit-width mode by default
+set adjust-open "best-fit"
+
+# One page per row by default
+set pages-per-row 1
