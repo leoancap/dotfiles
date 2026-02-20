@@ -2,8 +2,8 @@
 -- Neovim Configuration - Modular Single File
 -- ============================================================================
 
-vim.opt.runtimepath:prepend(vim.fn.expand("~/dotfiles/nvim"))
-require("eink")
+local eink = dofile(vim.fn.expand("~/dotfiles/nvim/eink.lua"))
+eink.set_eink_theme()
 
 -- ============================================================================
 -- Module: Options
