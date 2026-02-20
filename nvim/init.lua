@@ -2,6 +2,7 @@
 -- Neovim Configuration - Modular Single File
 -- ============================================================================
 
+vim.opt.runtimepath:prepend(vim.fn.expand("~/dotfiles/nvim"))
 require("eink")
 
 -- ============================================================================
