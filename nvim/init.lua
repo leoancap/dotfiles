@@ -87,9 +87,7 @@ end
 local Theme = {}
 
 function Theme.set_light_theme()
-  vim.cmd [[color eink]]
-  vim.api.nvim_set_hl(0, "@markup.raw.block.markdown", { fg = "#ffffff", bg = "#000000", bold = true })
-  vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#000000", fg = "#ffffff" })
+  eink.set_eink_theme()
 end
 
 function Theme.set_dark_theme()
