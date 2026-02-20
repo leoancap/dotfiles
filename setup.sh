@@ -55,8 +55,38 @@ link_dotfile() {
     ln -s "$src" "$dest"
 }
 
+setup_keyd() {
+    local src="$DOTFILES_DIR/keyd"
+    local dest="/etc/keyd"
+
+    if [[ ! -e "$src" ]]; then
+        log_error "Source does not exist: $src"
+        return 1
+    fi
+
+    if [[ ! -d "$dest" ]]; then
+        log_info "Creating directory: $dest"
+        sudo mkdir -p "$dest"
+    fi
+
+    for f in "$src"/*.conf; do
+        local fname=$(basename "$f")
+        if [[ -e "$dest/$fname" && ! -L "$dest/$fname" ]]; then
+            local backup="${dest}/${fname}.backup.$(date +%Y%m%d_%H%M%S)"
+            log_warn "Backing up existing $dest/$fname to $backup"
+            sudo mv "$dest/$fname" "$backup"
+        fi
+        log_info "Copying: $dest/$fname"
+        sudo cp "$f" "$dest/$fname"
+    done
+
+    log_info "Starting keyd service..."
+    sudo keyd enable 2>/dev/null || true
+    sudo systemctl start keyd 2>/dev/null || sudo keyd 2>/dev/null || true
+}
+
 echo "========================================"
-echo "       Dotfiles Symlink Setup"
+echo "          Dotfiles Setup"
 echo "========================================"
 echo ""
 
@@ -73,18 +103,22 @@ prompt_yes_no "Do you want to symlink st?" y && link_dotfile "st" "$HOME/.st" &&
 prompt_yes_no "Do you want to symlink tmux?" y && link_dotfile "tmux.conf" "$HOME/.tmux.conf" && created+=("$HOME/.tmux.conf")
 prompt_yes_no "Do you want to symlink zsh?" y && link_dotfile "zshrc" "$HOME/.zshrc" && created+=("$HOME/.zshrc")
 prompt_yes_no "Do you want to symlink zathura?" y && link_dotfile "zathura" "$HOME/.config/zathura" && created+=("$HOME/.config/zathura")
-prompt_yes_no "Do you want to symlink keyd?" y && link_dotfile "keyd" "/etc/keyd" && created+=("/etc/keyd")
+prompt_yes_no "Do you want to setup keyd?" y && setup_keyd && created+=("keyd")
 
 echo ""
 echo "========================================"
 if [[ ${#created[@]} -eq 0 ]]; then
-    log_info "No symlinks created."
+    log_info "No configurations created."
 else
-    log_info "Done! Symlinks created: ${#created[@]}"
+    log_info "Done! Configurations created: ${#created[@]}"
     echo ""
     echo "Your symlinks:"
     for f in "${created[@]}"; do
-        ls -la "$f" 2>/dev/null | grep -E "^l"
+        if [[ "$f" == "keyd" ]]; then
+            ls -la /etc/keyd/*.conf 2>/dev/null | grep -E "^-"
+        else
+            ls -la "$f" 2>/dev/null | grep -E "^l"
+        fi
     done
 fi
 echo "========================================"
