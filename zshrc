@@ -81,8 +81,6 @@ gac () {
     git commit -m "$1"
 }
 
-export PATH=$PATH:$(yarn global bin)
- 
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
@@ -90,10 +88,6 @@ setopt appendhistory
 
 # global pip apps
 export PATH=/home/leo/.local/bin/:$PATH
-
-# fnm
-export PATH=/home/leo/.fnm:$PATH
-eval "`fnm env`"
 
 # opam configuration
 [[ ! -r /home/leo/.opam/opam-init/init.zsh ]] || source /home/leo/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
