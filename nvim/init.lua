@@ -2,6 +2,8 @@
 -- Neovim Configuration - Modular Single File
 -- ============================================================================
 
+require("eink")
+
 -- ============================================================================
 -- Module: Options
 -- ============================================================================
@@ -723,12 +725,6 @@ Plugins.specs = {
   },
 
   -- Themes
-  {
-    "~/dotfiles/nvim/eink",
-    config = function()
-      require("eink").set_eink_theme()
-    end,
-  },
 
   -- LSP
   "neovim/nvim-lspconfig",
