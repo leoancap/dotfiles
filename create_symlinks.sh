@@ -72,6 +72,8 @@ prompt_yes_no "Do you want to symlink xmonad?" y && link_dotfile "xmonad" "$HOME
 prompt_yes_no "Do you want to symlink st?" y && link_dotfile "st" "$HOME/.st" && created+=("$HOME/.st")
 prompt_yes_no "Do you want to symlink tmux?" y && link_dotfile "tmux.conf" "$HOME/.tmux.conf" && created+=("$HOME/.tmux.conf")
 prompt_yes_no "Do you want to symlink zsh?" y && link_dotfile "zshrc" "$HOME/.zshrc" && created+=("$HOME/.zshrc")
+prompt_yes_no "Do you want to symlink zathura?" y && link_dotfile "zathura" "$HOME/.config/zathura" && created+=("$HOME/.config/zathura")
+prompt_yes_no "Do you want to symlink keyd?" y && link_dotfile "keyd" "/etc/keyd" && created+=("/etc/keyd")
 
 echo ""
 echo "========================================"
