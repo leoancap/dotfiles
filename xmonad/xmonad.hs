@@ -98,8 +98,8 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       ((super .|. controlMask, xK_comma), spawn "redshift -P -O 3000"),
       ((super .|. controlMask, xK_period), spawn "redshift -x"),
       -- Brightness keys
-      ((0, xF86XK_MonBrightnessUp), spawn "brightness --inc"),
-      ((0, xF86XK_MonBrightnessDown), spawn "brightness --dec"),
+      ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5%"),
+      ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 5%-"),
       -- Screenshot
       ((mod1Mask, xK_Print), spawn $ "takeshot --in5"),
       ((shiftMask, xK_Print), spawn $ "takeshot --in10"),
