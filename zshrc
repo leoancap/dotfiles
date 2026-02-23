@@ -7,7 +7,7 @@ zplug "zsh-users/zsh-syntax-highlighting"
 zplug "softmoth/zsh-vim-mode"
 
 # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
+if ! zplug check; then
     printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
@@ -15,7 +15,7 @@ if ! zplug check --verbose; then
 fi
 
 # Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load 
 
 zshcache_time="$(date +%s%N)"
 
@@ -118,7 +118,9 @@ function add-mode-eink-xsmall() {
 
 # SSH config
 # Oh-my-zsh compatible bash ssh-agent start script
-eval $(keychain --eval --quiet)
+if command -v keychain &>/dev/null; then
+  eval $(keychain --eval --quiet)
+fi
 
 #
 
