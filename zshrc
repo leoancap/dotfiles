@@ -41,6 +41,7 @@ alias v= 'vim'
 alias vi='vim'
 # alias nvim='~/apps/nvim.appimage'
 alias nvim='~/apps/nvim/bin/nvim'
+alias lazygit='~/apps/lazygit'
 alias mira='sudo node ~/apps/mira-js/bin/cli.js'
 
 
