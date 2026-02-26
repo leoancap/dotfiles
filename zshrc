@@ -43,6 +43,7 @@ alias vi='vim'
 alias nvim='~/apps/nvim/bin/nvim'
 alias lazygit='~/apps/lazygit'
 alias mira='sudo node ~/apps/mira-js/bin/cli.js'
+alias t='tmux attach || tmux new'
 
 
 # ls
@@ -140,3 +141,4 @@ export EDITOR=nvim
 # opencode
 export PATH=/home/leo/.opencode/bin:$PATH
 export PATH="$HOME/.npm-global/bin:$PATH"
+
