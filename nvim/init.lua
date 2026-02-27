@@ -755,57 +755,6 @@ Plugins.specs = {
   -- { dir = vim.fn.stdpath('config') .. '/lua/opencode' },
 
 
-  -- AI assistant
-  {
-	'milanglacier/minuet-ai.nvim',
-	config = function()
-	  require('minuet').setup({
-	    provider = "openai",
-	    virtualtext = {
-	      auto_trigger_ft = { "*" },
-	      keymap = {
-	        next = "<M-]>",
-	        prev = "<M-[>",
-	        dismiss = "<C-]>",
-	      },
-	    },
-	    provider_options = {
-	      openai = {
-	        model = 'gpt-4.1-mini',
-	        stream = true,
-	        api_key = function()
-	          if not vim.env.OPENAI_API_KEY or vim.env.OPENAI_API_KEY == '' then
-	            vim.notify("Minuet: OPENAI_API_KEY is not set", vim.log.levels.WARN)
-	            return "MISSING"
-	          end
-	          return vim.env.OPENAI_API_KEY
-	        end,
-	        optional = {
-	          max_completion_tokens = 128,
-	        },
-	      }
-	    }
-	  })
-
-	  vim.keymap.set("i", "<Tab>", function()
-	    local vt = require("minuet.virtualtext").action
-	    if vt.is_visible() then
-	      vt.accept()
-	      return ""
-	    end
-	    return "<Tab>"
-	  end, { expr = true, replace_keycodes = true, desc = "Minuet accept" })
-
-	  vim.keymap.set("i", "<S-Tab>", function()
-	    local vt = require("minuet.virtualtext").action
-	    if vt.is_visible() then
-	      vt.accept_line()
-	      return ""
-	    end
-	    return "<S-Tab>"
-	  end, { expr = true, replace_keycodes = true, desc = "Minuet accept line" })
-	end
-  }
 }
 
 function Plugins.setup()
