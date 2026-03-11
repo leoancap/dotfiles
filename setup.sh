@@ -85,6 +85,37 @@ setup_keyd() {
     sudo systemctl start keyd 2>/dev/null || sudo keyd 2>/dev/null || true
 }
 
+setup_lazygit() {
+    local version="0.60.0"
+    local arch="linux_x86_64"
+    local url="https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_${arch}.tar.gz"
+    local install_dir="$HOME/apps"
+    local binary_path="$install_dir/lazygit"
+
+    if [[ -x "$binary_path" ]]; then
+        log_info "lazygit already installed at $binary_path"
+        return 0
+    fi
+
+    log_info "Downloading lazygit v$version..."
+    mkdir -p "$install_dir"
+
+    if ! curl -sL "$url" -o /tmp/lazygit.tar.gz; then
+        log_error "Failed to download lazygit"
+        return 1
+    fi
+
+    tar -xzf /tmp/lazygit.tar.gz -C "$install_dir" lazygit
+    rm /tmp/lazygit.tar.gz
+
+    if [[ -x "$binary_path" ]]; then
+        log_info "lazygit installed to $binary_path"
+    else
+        log_error "Failed to install lazygit"
+        return 1
+    fi
+}
+
 setup_xresources() {
     local linked_any=false
 
@@ -127,6 +158,7 @@ prompt_yes_no "Do you want to symlink tmux?" y && link_dotfile "tmux.conf" "$HOM
 prompt_yes_no "Do you want to symlink zsh?" y && link_dotfile "zshrc" "$HOME/.zshrc" && created+=("$HOME/.zshrc")
 prompt_yes_no "Do you want to symlink zathura?" y && link_dotfile "zathura" "$HOME/.config/zathura" && created+=("$HOME/.config/zathura")
 prompt_yes_no "Do you want to setup keyd?" y && setup_keyd && created+=("keyd")
+prompt_yes_no "Do you want to install lazygit?" y && setup_lazygit && created+=("lazygit")
 
 echo ""
 echo "========================================"
