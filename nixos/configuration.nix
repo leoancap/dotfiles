@@ -7,6 +7,8 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.configurationLimit = 50; 
+
 
   programs.nix-ld.enable = true;
 
@@ -48,8 +50,11 @@
 
   services.logrotate.enable = true;
 
+  programs.zsh.enable = true;
+
   users.users.leo = {
     isNormalUser = true;
+    shell = pkgs.zsh;
     extraGroups = [ "wheel" "networkmanager" "video" ];
   };
 
@@ -74,6 +79,8 @@
     arandr
     xrandr
     brightnessctl
+    tmux
+    pcmanfm
     rofi
     polybar
     qbittorrent
@@ -84,12 +91,33 @@
     ranger
     appimage-run
     redshift
+    wireguard-tools
+    flameshot
+    betterlockscreen
 
     # C 
     stdenv.cc
     fontconfig
     freetype
     harfbuzz
-    
+
+
+
+    (st.overrideAttrs (oldAttrs: {
+      src = ../st;
+      buildInputs = (oldAttrs.buildInputs or []) ++ [
+        pkgs.harfbuzz
+      ];
+    }))
+
+    (writeShellScriptBin "brave-work" ''
+      exec ${brave}/bin/brave --profile-directory="Work" "$@"
+    '')
+
+    (writeShellScriptBin "brave-personal" ''
+      exec ${brave}/bin/brave --profile-directory="Personal" "$@"
+    '')
+
+
   ];
 }
