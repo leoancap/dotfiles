@@ -94,6 +94,7 @@
     wireguard-tools
     flameshot
     betterlockscreen
+    gh
 
     # C 
     stdenv.cc
