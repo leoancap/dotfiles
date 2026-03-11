@@ -85,6 +85,29 @@ setup_keyd() {
     sudo systemctl start keyd 2>/dev/null || sudo keyd 2>/dev/null || true
 }
 
+setup_xresources() {
+    local linked_any=false
+
+    if link_dotfile ".Xresources_light" "$HOME/.Xresources_light"; then
+        created+=("$HOME/.Xresources_light")
+        linked_any=true
+    fi
+
+    if link_dotfile ".Xresources_dark" "$HOME/.Xresources_dark"; then
+        created+=("$HOME/.Xresources_dark")
+        linked_any=true
+    fi
+
+    if link_dotfile ".Xresources" "$HOME/.Xresources"; then
+        created+=("$HOME/.Xresources")
+        linked_any=true
+    fi
+
+    if [[ "$linked_any" == true ]]; then
+        log_info "Default Xresources set to light theme (dotfiles/.Xresources)."
+    fi
+}
+
 echo "========================================"
 echo "          Dotfiles Setup"
 echo "========================================"
@@ -99,7 +122,7 @@ created=()
 
 prompt_yes_no "Do you want to symlink nvim?" y && link_dotfile "nvim" "$HOME/.config/nvim" && created+=("$HOME/.config/nvim")
 prompt_yes_no "Do you want to symlink xmonad?" y && link_dotfile "xmonad" "$HOME/.xmonad" && created+=("$HOME/.xmonad")
-prompt_yes_no "Do you want to symlink st?" y && link_dotfile "st" "$HOME/.st" && created+=("$HOME/.st")
+prompt_yes_no "Do you want to symlink Xresources (light default, plus dark variant)?" y && setup_xresources
 prompt_yes_no "Do you want to symlink tmux?" y && link_dotfile "tmux.conf" "$HOME/.tmux.conf" && created+=("$HOME/.tmux.conf")
 prompt_yes_no "Do you want to symlink zsh?" y && link_dotfile "zshrc" "$HOME/.zshrc" && created+=("$HOME/.zshrc")
 prompt_yes_no "Do you want to symlink zathura?" y && link_dotfile "zathura" "$HOME/.config/zathura" && created+=("$HOME/.config/zathura")
