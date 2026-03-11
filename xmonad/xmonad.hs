@@ -88,18 +88,18 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       ((mod1Mask .|. controlMask, xK_n), rofi_network),
       ((mod1Mask .|. controlMask, xK_s), rofi_screenshot),
       -- Audio keys
-      ((0, xF86XK_AudioRaiseVolume), spawn "volume --inc"),
-      ((super, xK_equal), spawn "volume --inc"),
-      ((0, xF86XK_AudioLowerVolume), spawn "volume --dec"),
-      ((super, xK_minus), spawn "volume --dec"),
-      ((0, xF86XK_AudioMute), spawn "volume --toggle"),
-      ((super, xK_backslash), spawn "volume --toggle"),
+      ((0, xF86XK_AudioRaiseVolume), spawn "pamixer -i 5"),
+      ((super, xK_equal), spawn "pamixer -i 5"),
+      ((0, xF86XK_AudioLowerVolume), spawn "pamixer -d 5"),
+      ((super, xK_minus), spawn "pamixer -d 5"),
+      ((0, xF86XK_AudioMute), spawn "pamixer -t"),
+      ((super, xK_backslash), spawn "pamixer -t"),
      -- Redshift redlight keys
       ((super .|. controlMask, xK_comma), spawn "redshift -P -O 3000"),
       ((super .|. controlMask, xK_period), spawn "redshift -x"),
       -- Brightness keys
       ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5%"),
-      ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 5%-"),
+      ((0, xF86XK_MonBrightnessDown), spawn "brightnessctl set 4%-"),
       -- Screenshot
       ((mod1Mask, xK_Print), spawn $ "takeshot --in5"),
       ((shiftMask, xK_Print), spawn $ "takeshot --in10"),

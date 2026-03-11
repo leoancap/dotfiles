@@ -5,6 +5,8 @@
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
 
   programs.nix-ld.enable = true;
 
@@ -20,6 +22,12 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
+
+  services.udev = {
+    extraRules = ''
+      SUBSYSTEM=="backlight", GROUP="video", MODE="0664"
+    '';
+  };
 
   services.keyd = {
     enable = true;
@@ -42,7 +50,7 @@
 
   users.users.leo = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "video" ];
   };
 
   users.groups = {
@@ -69,8 +77,13 @@
     rofi
     polybar
     qbittorrent
+    pamixer
     alsa-utils
     pulseaudio
+    mpv
+    ranger
+    appimage-run
+    redshift
 
     # C 
     stdenv.cc
