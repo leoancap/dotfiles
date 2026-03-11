@@ -50,6 +50,17 @@
 
   services.logrotate.enable = true;
 
+  security.pam.services.betterlockscreen = {
+    text = ''
+      auth     include login
+      account  include login
+      password include login
+      session  include login
+    '';
+  };
+
+  programs.betterlockscreen.enable = true;
+
   programs.zsh.enable = true;
 
   users.users.leo = {
