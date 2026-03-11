@@ -48,6 +48,11 @@
   services.accounts-daemon.enable = true;
   networking.networkmanager.enable = true;
 
+  services.betterlockscreen = {
+    enable = true;
+    package = pkgs.betterlockscreen;
+  };
+
   services.logrotate.enable = true;
 
   security.pam.services.betterlockscreen = {
@@ -58,8 +63,6 @@
       session  include login
     '';
   };
-
-  programs.betterlockscreen.enable = true;
 
   programs.zsh.enable = true;
 
