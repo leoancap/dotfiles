@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
 
+let
+  pamIncludeLogin = ''
+    auth     include login
+    account  include login
+    password include login
+    session  include login
+  '';
+in
 {
   imports = [ /etc/nixos/hardware-configuration.nix ];
 
@@ -56,19 +64,10 @@
   services.logrotate.enable = true;
 
   security.pam.services = {
-    betterlockscreen.text = ''
-      auth     include login
-      account  include login
-      password include login
-      session  include login
-    '';
-    "i3lock-color".text = ''
-      auth     include login
-      account  include login
-      password include login
-      session  include login
-    '';
+    i3lock.text = pamIncludeLogin;
   };
+
+  environment.etc."pam.d/i3lock".text = pamIncludeLogin;
 
   programs.zsh.enable = true;
 

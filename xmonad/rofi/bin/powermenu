@@ -43,9 +43,10 @@ case $chosen in
     $suspend)
 		ans=$($HOME/.xmonad/rofi/bin/confirm &)
 		if [[ $ans == "yes" ]] || [[ $ans == "YES" ]] || [[ $ans == "y" ]]; then
+			playerctl -a pause
 			mpc -q pause
 			amixer set Master mute
-			betterlockscreen --suspend
+			i3lock-color -c 000000 && systemctl suspend
 		elif [[ $ans == "no" ]] || [[ $ans == "NO" ]] || [[ $ans == "n" ]]; then
 			exit
         else
