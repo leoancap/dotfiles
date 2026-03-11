@@ -56,11 +56,6 @@ in
   services.accounts-daemon.enable = true;
   networking.networkmanager.enable = true;
 
-  services.betterlockscreen = {
-    enable = true;
-    package = pkgs.betterlockscreen;
-  };
-
   services.logrotate.enable = true;
 
   security.pam.services = {
@@ -112,9 +107,9 @@ in
     redshift
     wireguard-tools
     flameshot
-    betterlockscreen
     i3lock-color
     gh
+    lazygit
 
     # C 
     stdenv.cc

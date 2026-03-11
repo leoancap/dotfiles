@@ -49,9 +49,8 @@ dmenu = spawn "dmenu_run -l 10 -fn 'monospace:size=16' -nb '#ffffff' -nf '#00000
 rofi_launcher = spawn "~/.xmonad/rofi/bin/launcher"
 rofi_network = spawn "~/.xmonad/rofi/bin/network"
 rofi_powermenu = spawn "~/.xmonad/rofi/bin/powermenu"
--- rofi_screenshot = spawn "QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCREEN_SCALE_FACTORS=1 QT_SCALE_FACTOR=1 QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui"
 rofi_screenshot = spawn "flameshot gui"
-suspendMachine = spawn "playerctl -a pause && mpc -q pause && amixer set Master mute && i3lock-color -c 000000 && systemctl suspend"
+suspendMachine = spawn "amixer set Master mute && i3lock -c 333333 && systemctl suspend"
 
 -- ## Settings ## -------------------------------------------------------------------
 myFocusFollowsMouse = True
