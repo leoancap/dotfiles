@@ -53,12 +53,6 @@
     package = pkgs.betterlockscreen;
   };
 
-  services.screen-locker = {
-    enable = true;
-    lockCmd = "${pkgs.i3lock-color}/bin/i3lock-color -c 000000";
-    inactiveInterval = 10;
-  };
-
   services.logrotate.enable = true;
 
   security.pam.services = {
