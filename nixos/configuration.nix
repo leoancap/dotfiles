@@ -53,10 +53,22 @@
     package = pkgs.betterlockscreen;
   };
 
+  services.screen-locker = {
+    enable = true;
+    lockCmd = "${pkgs.i3lock-color}/bin/i3lock-color -c 000000";
+    inactiveInterval = 10;
+  };
+
   services.logrotate.enable = true;
 
-  security.pam.services.betterlockscreen = {
-    text = ''
+  security.pam.services = {
+    betterlockscreen.text = ''
+      auth     include login
+      account  include login
+      password include login
+      session  include login
+    '';
+    "i3lock-color".text = ''
       auth     include login
       account  include login
       password include login
@@ -108,6 +120,7 @@
     wireguard-tools
     flameshot
     betterlockscreen
+    i3lock-color
     gh
 
     # C 
