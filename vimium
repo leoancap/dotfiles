@@ -1,0 +1,11 @@
+map <c-j:i> nextTab
+map! <c-j> nextTab
+
+map <c-k:i> previousTab
+map! <c-k> previousTab
+
+# Copy selected text (while in Visual Mode)
+map <a-c> autoCopy
+
+# Paste text from clipboard and search/open it
+mapKey <a-v> <c-v>

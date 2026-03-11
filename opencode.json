@@ -1,0 +1,5 @@
+{
+  "$schema": "https://opencode.ai/schema.json",
+  "exclude": [".git", "setup.sh"],
+  "ignore": ["*.md", "README*"]
+}
