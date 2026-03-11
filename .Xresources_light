@@ -1,0 +1,61 @@
+Xft.dpi: 120
+st.font: Monospace-13;
+
+! Typewriter light
+! Scheme: Typewriter (https://github.com/logico-dev)
+! Based on: Alexandre Gavioli (https://github.com/Alexx2/)
+
+#define base00 #ffffff
+#define base01 #e3e3e3
+#define base02 #00BAFF
+#define base03 #ababab
+#define base04 #525252
+#define base05 #464646
+#define base06 #252525
+#define base07 #000000
+#define base08 #7c7c7c
+#define base09 #999999
+#define base0A #a0a0a0
+#define base0B #8e8e8e
+#define base0C #868686
+#define base0D #686868
+#define base0E #747474
+#define base0F #5e5e5e
+#define base0G #E41D91
+#define base0H #009900
+
+*.foreground:   base07
+*.background:   base00
+*.cursorColor:  base02
+
+! Black
+*.color0:       base00
+*.color8:       base0A
+
+! Red
+*.color1:       base08
+*.color9:       base08
+
+! Green
+*.color2:       base05
+*.color10:      base0B
+
+! Yellow
+*.color3:       base0A
+*.color11:      base0G
+
+! Blue
+*.color4:       base0D
+*.color12:      base0D
+
+! Magenta
+*.color5:       base0E
+*.color13:      base0H
+
+! Cyan
+*.color6:       base0C
+*.color14:      base02
+
+! White
+*.color7:       base05
+*.color15:      base07

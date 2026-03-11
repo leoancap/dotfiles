@@ -33,7 +33,7 @@ myTerminal = "st"
 file_manager = spawn "pcmanfm"
 web_browser = spawn "brave-browser"
 terminal_light= spawn "xrdb merge ~/.Xresources_light && kill -USR1 $(pidof st)"
-terminal_dark= spawn "xrdb merge ~/.Xresources && kill -USR1 $(pidof st)"
+terminal_dark= spawn "xrdb merge ~/.Xresources_dark && kill -USR1 $(pidof st)"
 
 -- Monitors 
 single_monitor = spawn "~/.screenlayout/single-monitor.sh"
@@ -51,6 +51,7 @@ rofi_network = spawn "~/.xmonad/rofi/bin/network"
 rofi_powermenu = spawn "~/.xmonad/rofi/bin/powermenu"
 -- rofi_screenshot = spawn "QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCREEN_SCALE_FACTORS=1 QT_SCALE_FACTOR=1 QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui"
 rofi_screenshot = spawn "flameshot gui"
+suspendMachine = spawn "playerctl -a pause && mpc -q pause && amixer set Master mute && betterlockscreen --suspend"
 
 -- ## Settings ## -------------------------------------------------------------------
 myFocusFollowsMouse = True
@@ -84,7 +85,8 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       ((mod1Mask, xK_F1), dmenu),
       ((super, xK_d), rofi_launcher),
       ((super, xK_semicolon), dmenu),
-      ((super, xK_x), rofi_powermenu),
+      ((super .|. shiftMask, xK_x), rofi_powermenu),
+      ((super, xK_x), suspendMachine),
       ((mod1Mask .|. controlMask, xK_n), rofi_network),
       ((mod1Mask .|. controlMask, xK_s), rofi_screenshot),
       -- Audio keys
@@ -95,7 +97,7 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       ((0, xF86XK_AudioMute), spawn "pamixer -t"),
       ((super, xK_backslash), spawn "pamixer -t"),
      -- Redshift redlight keys
-      ((super .|. controlMask, xK_comma), spawn "redshift -P -O 3000"),
+      ((super .|. controlMask, xK_comma), spawn "redshift -P -O 2500"),
       ((super .|. controlMask, xK_period), spawn "redshift -x"),
       -- Brightness keys
       ((0, xF86XK_MonBrightnessUp), spawn "brightnessctl set +5%"),
