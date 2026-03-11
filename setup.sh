@@ -116,6 +116,35 @@ setup_lazygit() {
     fi
 }
 
+setup_nvim() {
+    local url="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.tar.gz"
+    local install_dir="$HOME/apps/nvim"
+    local binary_path="$install_dir/bin/nvim"
+
+    if [[ -x "$binary_path" ]]; then
+        log_info "nvim already installed at $binary_path"
+        return 0
+    fi
+
+    log_info "Downloading neovim nightly..."
+    mkdir -p "$install_dir"
+
+    if ! curl -sL "$url" -o /tmp/nvim.tar.gz; then
+        log_error "Failed to download neovim"
+        return 1
+    fi
+
+    tar -xzf /tmp/nvim.tar.gz -C "$install_dir" --strip-components=1
+    rm /tmp/nvim.tar.gz
+
+    if [[ -x "$binary_path" ]]; then
+        log_info "nvim installed to $binary_path"
+    else
+        log_error "Failed to install nvim"
+        return 1
+    fi
+}
+
 setup_xresources() {
     local linked_any=false
 
@@ -159,6 +188,7 @@ prompt_yes_no "Do you want to symlink zsh?" y && link_dotfile "zshrc" "$HOME/.zs
 prompt_yes_no "Do you want to symlink zathura?" y && link_dotfile "zathura" "$HOME/.config/zathura" && created+=("$HOME/.config/zathura")
 prompt_yes_no "Do you want to setup keyd?" y && setup_keyd && created+=("keyd")
 prompt_yes_no "Do you want to install lazygit?" y && setup_lazygit && created+=("lazygit")
+prompt_yes_no "Do you want to install nvim?" y && setup_nvim && created+=("nvim")
 
 echo ""
 echo "========================================"
