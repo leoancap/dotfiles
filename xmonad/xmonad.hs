@@ -51,7 +51,7 @@ rofi_network = spawn "~/.xmonad/rofi/bin/network"
 rofi_powermenu = spawn "~/.xmonad/rofi/bin/powermenu"
 -- rofi_screenshot = spawn "QT_AUTO_SCREEN_SCALE_FACTOR=0 QT_SCREEN_SCALE_FACTORS=1 QT_SCALE_FACTOR=1 QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui"
 rofi_screenshot = spawn "flameshot gui"
-suspendMachine = spawn "playerctl -a pause && mpc -q pause && amixer set Master mute && betterlockscreen --suspend"
+suspendMachine = spawn "amixer set Master mute && betterlockscreen --suspend"
 
 -- ## Settings ## -------------------------------------------------------------------
 myFocusFollowsMouse = True
