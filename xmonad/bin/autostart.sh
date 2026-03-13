@@ -12,7 +12,7 @@ done
 u
 
 # keyboard speed
-xset r rate 165 75 &
+(sleep 0.1; xset r rate 150 70) &
 
 # Fix cursor
 xsetroot -cursor_name left_ptr

@@ -68,6 +68,9 @@ in
 
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.sessionCommands = ''
+    xset r rate 150 70
+  '';
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
 
@@ -79,13 +82,47 @@ in
 
   services.keyd = {
     enable = true;
-    keyboards = {
-      default = {
-        ids = [ "*" ]; 
-        settings = {
-          main = {
-            capslock = "layer(control)"; # you might need to also enclose the key in quotes if it contains non-alphabetical symbols
-          };
+    keyboards.default = {
+      ids = [ "*" ];
+      settings = {
+        main = {
+          leftmeta = "leftalt";
+          leftalt = "overload(nav, leftmeta)";
+          rightalt = "layer(altgr_nav)";
+          capslock = "overload(control, esc)";
+        };
+        "nav:M" = {
+          h = "left";
+          j = "down";
+          k = "up";
+          l = "right";
+        };
+        altgr_nav = {
+          h = "left";
+          j = "down";
+          k = "up";
+          l = "right";
+        };
+      };
+    };
+    keyboards.hhkb = {
+      ids = [ "04fe:0016" ];
+      settings = {
+        main = {
+          leftmeta = "layer(nav)";
+          rightmeta = "layer(nav)";
+          delete = "backspace";
+          backspace = "delete";
+          capslock = "overload(control, esc)";
+          tab = "overload(nav_layer, tab)";
+        };
+        "nav:M" = {
+          h = "left";
+          j = "down";
+          k = "up";
+          l = "right";
+          c = "A-c";
+          v = "C-S-v";
         };
       };
     };
@@ -103,6 +140,9 @@ in
   environment.etc."pam.d/i3lock".text = pamIncludeLogin;
 
   programs.zsh.enable = true;
+  programs.zsh.initialization = ''
+    [[ -n $DISPLAY ]] && xset r rate 150 70
+  '';
 
   users.users.leo = {
     isNormalUser = true;
@@ -150,6 +190,8 @@ in
     gh
     steam-run
     hubstaff
+    gnumake
+    keychain
 
     # C 
     stdenv.cc
