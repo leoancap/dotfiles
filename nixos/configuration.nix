@@ -8,6 +8,43 @@ let
     session  include login
   '';
 in
+
+let
+  hubstaff = pkgs.buildFHSEnv {
+    name = "hubstaff";
+    targetPkgs = pkgs: with pkgs; [
+      xorg.libSM
+      xorg.libICE
+      xorg.libX11
+      xorg.libXext
+      xorg.libXi
+      xorg.libXrender
+      xorg.libXtst
+      xorg.libXfixes
+      xorg.libXcursor
+      xorg.libXft
+      xorg.libXinerama
+      glib
+      gtk3
+      nss
+      nspr
+      dbus
+      atk
+      cups
+      libdrm
+      pango
+      cairo
+      alsa-lib
+      mesa
+      libGL
+      zlib
+      fontconfig
+      freetype
+    ];
+    runScript = "/home/leo/Hubstaff/HubstaffClient.bin.x86_64";
+  };
+in
+
 {
   imports = [ /etc/nixos/hardware-configuration.nix ];
 
@@ -17,8 +54,9 @@ in
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.configurationLimit = 50; 
 
-
   programs.nix-ld.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
 
   networking.hostName = "nixos";
 
@@ -77,7 +115,8 @@ in
     lightdm = {};
     uinput = {};
     pipewire = {};
-  };
+  }; 
+
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -109,7 +148,8 @@ in
     flameshot
     i3lock-color
     gh
-    lazygit
+    steam-run
+    hubstaff
 
     # C 
     stdenv.cc
