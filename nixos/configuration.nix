@@ -66,19 +66,37 @@ in
     LC_NUMERIC = "es_ES.UTF-8";
   };
 
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.sessionCommands = ''
-    xset r rate 150 70
-  '';
+  services.xserver = {
+    enable = true;
+    displayManager.lightdm.enable = true;
+    displayManager.sessionCommands = ''
+      xset r rate 150 70
+    '';
+    config = ''
+      Section "InputClass"
+        Identifier "libinput cursor catchall"
+        MatchIsPointer "on"
+        Option "CursorSize" "48"
+      EndSection
+    '';
+  };
   services.xserver.windowManager.xmonad.enable = true;
   services.xserver.windowManager.xmonad.enableContribAndExtras = true;
 
   services.udev = {
     extraRules = ''
       SUBSYSTEM=="backlight", GROUP="video", MODE="0664"
+      # 8BitDo controllers over USB and Bluetooth
+      SUBSYSTEM=="usb", ATTR{idVendor}=="2dc8", MODE="0666"
+      SUBSYSTEM=="input", ATTRS{idVendor}=="2dc8", MODE="0666"
     '';
   };
+
+  services.udev.packages = with pkgs; [ 
+    game-devices-udev-rules 
+  ];
+
+  hardware.uinput.enable = true;
 
   services.keyd = {
     enable = true;
@@ -139,8 +157,10 @@ in
 
   environment.etc."pam.d/i3lock".text = pamIncludeLogin;
 
+  hardware.xone.enable = true; # For modern 8BitDo dongles/controllers
+
   programs.zsh.enable = true;
-  programs.zsh.initialization = ''
+  programs.zsh.shellInit = ''
     [[ -n $DISPLAY ]] && xset r rate 150 70
   '';
 
@@ -161,12 +181,25 @@ in
   environment.systemPackages = with pkgs; [
     alacritty
     brave
+    qutebrowser
+    luakit
+    firefox
+    p7zip
+    unrar
     vim
     zathura
     zsh
     git
+    snes9x-gtk
+    bsnes-hd
+    (retroarch.withCores (cores: with cores; [
+      snes9x
+      bsnes
+    ]))
     curl
     wget
+    koreader
+    anki
     nodejs
     dmenu
     arandr
