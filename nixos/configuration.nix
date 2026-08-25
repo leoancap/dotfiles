@@ -223,6 +223,7 @@ in
     zsh
 
     # C 
+    clang
     stdenv.cc
     fontconfig
     freetype

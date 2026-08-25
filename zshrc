@@ -88,9 +88,6 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 
-# global pip apps
-export PATH=/home/leo/.local/bin/:$PATH
-
 # opam configuration
 [[ ! -r /home/leo/.opam/opam-init/init.zsh ]] || source /home/leo/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
@@ -131,14 +128,26 @@ export AHREFS_MONOREPO="$HOME/ahrefs/monorepo"
 # Load secrets (API keys, etc.) - not tracked in git
 [[ -f ~/.secrets ]] && source ~/.secrets
 
-export PATH="$HOME/.bin:$PATH"
-
 export EDITOR=nvim
 
 # stty erase ^H
 
 
-# opencode
-export PATH=/home/leo/.opencode/bin:$PATH
-export PATH="$HOME/.npm-global/bin:$PATH"
+# ── PATH ────────────────────────────────────────────────────────────────
+# Single place for every PATH addition. Add new directories to this array.
+# $PATH is kept in sync automatically: zsh ties it to the `path` array.
+# Order matters: highest precedence first.
+path=(
+  $HOME/.npm-global/bin                               # npm -g installs
+  $HOME/.opencode/bin                                 # opencode
+  $HOME/.bin                                          # personal scripts
+  $HOME/.local/bin                                    # pip --user apps
+  $HOME/languages/odin-linux-amd64-nightly+2026-08-06 # odin
+  $HOME/languages/ols                                 # ols + odinfmt
+  $path
+)
+
+# Drop duplicates (keeps the first occurrence). Must assign via the `path`
+# array for this to take effect -- `export PATH=...` bypasses it.
+typeset -U path PATH
 
