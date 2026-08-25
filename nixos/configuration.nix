@@ -180,51 +180,48 @@ in
 
   environment.systemPackages = with pkgs; [
     alacritty
+    alsa-utils
+    anki
+    appimage-run
+    arandr
     brave
-    qutebrowser
-    luakit
+    brightnessctl
+    bsnes-hd
+    curl
+    dmenu
     firefox
+    flameshot
+    gh
+    git
+    gnumake
+    hubstaff
+    i3lock-color
+    keychain
+    koreader
+    luakit
+    mpv
+    nodejs
+    odin
     p7zip
+    pamixer
+    pcmanfm
+    polybar
+    pulseaudio
+    qbittorrent
+    qutebrowser
+    ranger
+    redshift
+    rofi
+    snes9x-gtk
+    steam-run
+    tmux
     unrar
     vim
+    wget
+    wireguard-tools
+    xrandr
     zathura
     zsh
-    git
-    snes9x-gtk
-    bsnes-hd
-    (retroarch.withCores (cores: with cores; [
-      snes9x
-      bsnes
-    ]))
-    curl
-    wget
-    koreader
-    anki
-    nodejs
-    dmenu
-    arandr
-    xrandr
-    brightnessctl
-    tmux
-    pcmanfm
-    rofi
-    polybar
-    qbittorrent
-    pamixer
-    alsa-utils
-    pulseaudio
-    mpv
-    ranger
-    appimage-run
-    redshift
-    wireguard-tools
-    flameshot
-    i3lock-color
-    gh
-    steam-run
-    hubstaff
-    gnumake
-    keychain
 
     # C 
     stdenv.cc
@@ -232,7 +229,10 @@ in
     freetype
     harfbuzz
 
-
+   (retroarch.withCores (cores: with cores; [
+      snes9x
+      bsnes
+    ]))
 
     (st.overrideAttrs (oldAttrs: {
       src = ../st;

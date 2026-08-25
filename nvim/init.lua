@@ -231,6 +231,14 @@ function Autocmds.setup()
     group = fmt_group,
   })
 
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.odin",
+    callback = function()
+      vim.lsp.buf.format()
+    end,
+    group = fmt_group,
+  })
+
   -- Telescope history (last 50 files)
   local history_path = vim.fn.expand("~/.telescope_history")
   vim.api.nvim_create_autocmd("BufEnter", {
@@ -676,7 +684,25 @@ function LSP.setup()
   })
   vim.lsp.enable('ocamllsp')
 
-  -- Inline completion handled by Minuet (virtual text)
+  -- Odin LSP
+  -- NOTE: only declare a collection if the directory actually exists, otherwise
+  -- `odin check` aborts with "Library collection ... must be a directory" and
+  -- ols reports zero diagnostics.
+  local odin_collections = {}
+  local odin_lib = vim.fn.expand('$HOME/odin-lib')
+  if vim.fn.isdirectory(odin_lib) == 1 then
+    odin_collections[#odin_collections + 1] = { name = "shared", path = odin_lib }
+  end
+
+  vim.lsp.config('ols', {
+    capabilities = capabilities,
+    init_options = {
+      checker_args = "-strict-style",
+      collections = odin_collections,
+    },
+  })
+  vim.lsp.enable('ols')
+
 
 end
 
