@@ -86,12 +86,30 @@ end
 -- ============================================================================
 local Theme = {}
 
+-- "light" (eink) or "dark" (gruvbox). Other modules read this to know whether
+-- the light-theme highlight overrides below should apply.
+Theme.current = "light"
+
 function Theme.set_light_theme()
+  Theme.current = "light"
+  vim.g.colors_name = nil
   eink.set_eink_theme()
 end
 
 function Theme.set_dark_theme()
+  Theme.current = "dark"
+
+  local ok, gruvbox = pcall(require, "gruvbox")
+  if ok then
+    gruvbox.setup({
+      contrast = "hard",
+      terminal_colors = true,
+      transparent_mode = false,
+    })
+  end
+
   vim.opt.background = "dark"
+  pcall(vim.cmd.colorscheme, "gruvbox")
 end
 
 function Theme.setup()
@@ -156,6 +174,9 @@ function Autocmds.setup()
 
   -- Tame OCaml/Reason type annotation highlights
   local function tame_ocaml_hl()
+    if Theme.current ~= "light" then
+      return
+    end
     vim.api.nvim_set_hl(0, "ocamlTypeCatchAll", { link = "Type" })
     vim.api.nvim_set_hl(0, "ocamlTypeAnnot", { link = "Type" })
   end
@@ -174,6 +195,9 @@ function Autocmds.setup()
 
   -- Remove bold from type-related highlights
   local function tame_type_bold()
+    if Theme.current ~= "light" then
+      return
+    end
     vim.api.nvim_set_hl(0, "Type", { fg = "#000000", bold = false })
     vim.api.nvim_set_hl(0, "Include", { fg = "#000000", bold = false })
   end
@@ -750,6 +774,7 @@ Plugins.specs = {
   },
 
   -- Themes
+  { "ellisonleao/gruvbox.nvim", lazy = false, priority = 1000 },
 
   -- LSP
   "neovim/nvim-lspconfig",

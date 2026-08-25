@@ -201,7 +201,6 @@ in
     luakit
     mpv
     nodejs
-    odin
     p7zip
     pamixer
     pcmanfm

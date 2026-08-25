@@ -132,6 +132,8 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       -- Resize windows
       ((super .|. controlMask, xK_n), sendMessage Shrink),
       ((super .|. controlMask, xK_p), sendMessage Expand),
+      -- Toggle between the current and the last visited workspace
+      ((super, xK_o), toggleWS),
       -- Restart xmonad
       ((super, xK_q), spawn "xmonad --recompile; xmonad --restart")
     ]
