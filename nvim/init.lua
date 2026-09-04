@@ -158,11 +158,13 @@ function Autocmds.setup()
   })
 
   -- File type specific settings
+  -- NOTE: `syntax = ocaml` used to be forced here as a stand-in for Reason.
+  -- Dropped: there is now a real `reason` treesitter parser, and leaving the
+  -- regex syntax on stacked OCaml's (wrong) groups on top of it.
   vim.api.nvim_create_autocmd({"BufNewFile", "BufRead", "BufReadPost"}, {
     pattern = "*.re",
     callback = function()
       vim.bo.filetype = "reason"
-      vim.bo.syntax = "ocaml"
     end,
   })
 
@@ -581,8 +583,9 @@ function Keymaps.setup()
     vim.cmd("vsplit")
     vim.cmd("Telescope lsp_definitions")
   end)
-  map("n", "gd", vim.lsp.buf.declaration)
-  map("n", "gD", vim.lsp.buf.definition)
+  -- gd = definition (gD = declaration; many servers, incl. ols, don't implement it)
+  map("n", "gd", vim.lsp.buf.definition)
+  map("n", "gD", vim.lsp.buf.declaration)
   map("n", "<leader>d", vim.lsp.buf.definition)
   map("n", "gi", vim.lsp.buf.implementation)
   map("n", "gr", function() vim.cmd("Telescope lsp_references") end)
@@ -666,38 +669,39 @@ function LSP.setup()
   -- Completion setup
   local cmp = require("cmp")
 
-  cmp.setup {
-    views = { entries = "native" },
-    experimental = { ghost_text = true, native_menu = false },
-    window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-    },
-    mapping = {
-      ["<C-p>"] = cmp.mapping.select_prev_item(),
-      ["<C-n>"] = cmp.mapping.select_next_item(),
-      ["<C-d>"] = cmp.mapping.scroll_docs(-3),
-      ["<C-f>"] = cmp.mapping.scroll_docs(5),
-      ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.close(),
-      ["<CR>"] = cmp.mapping.confirm {
-        behavior = cmp.ConfirmBehavior.Replace,
-        select = true
-      },
-      ["<S-Tab>"] = function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        else
-          fallback()
-        end
-      end
-    },
-    sources = {
-      { name = "nvim_lsp" },
-      { name = "buffer" },
-      { name = "path" }
-    }
-  }
+   cmp.setup {
+     views = { entries = "native" },
+     experimental = { ghost_text = false, native_menu = false },
+     window = {
+       completion = cmp.config.window.bordered(),
+       documentation = cmp.config.window.bordered(),
+     },
+     mapping = {
+       ["<C-p>"] = cmp.mapping.select_prev_item(),
+       ["<C-n>"] = cmp.mapping.select_next_item(),
+       ["<C-d>"] = cmp.mapping.scroll_docs(-3),
+       ["<C-f>"] = cmp.mapping.scroll_docs(5),
+       ["<C-Space>"] = cmp.mapping.complete(),
+       ["<C-e>"] = cmp.mapping.close(),
+       ["<CR>"] = cmp.mapping.confirm {
+         behavior = cmp.ConfirmBehavior.Replace,
+         select = true
+       },
+       ["<S-Tab>"] = function(fallback)
+         if cmp.visible() then
+           cmp.select_prev_item()
+         else
+           fallback()
+         end
+       end
+     },
+     sources = {
+       { name = "nvim_lsp" },
+       { name = "buffer" },
+       { name = "path" }
+     },
+     completion = { autocomplete = false }
+   }
 
   -- Setup capabilities
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -721,7 +725,7 @@ function LSP.setup()
   vim.lsp.config('ols', {
     capabilities = capabilities,
     init_options = {
-      checker_args = "-strict-style",
+      checker_args = "-strict-style -leaker-detector",
       collections = odin_collections,
     },
   })
@@ -773,6 +777,15 @@ Plugins.specs = {
     dependencies = 'nvim-tree/nvim-web-devicons',
   },
 
+  -- Syntax highlighting
+  -- NOTE: pinned to `master`. The repo's default branch is now `main`, which is
+  -- an incompatible rewrite (no `nvim-treesitter.configs`, different install API).
+  {
+    "nvim-treesitter/nvim-treesitter",
+    branch = "master",
+    build = ":TSUpdate",
+  },
+
   -- Themes
   { "ellisonleao/gruvbox.nvim", lazy = false, priority = 1000 },
 
@@ -814,6 +827,39 @@ function Plugins.setup()
   -- Autopairs
   require("nvim-autopairs").setup()
   require("nvim-autopairs").remove_rule("`")
+
+  -- Treesitter
+  -- `reason` is not bundled with nvim-treesitter, so register it by hand.
+  -- Highlight queries are vendored at nvim/queries/reason/highlights.scm
+  -- (the upstream repo ships them, but only nvim-treesitter's own parsers get
+  -- their queries installed automatically).
+  require("nvim-treesitter.parsers").get_parser_configs().reason = {
+    install_info = {
+      url = "https://github.com/reasonml-editor/tree-sitter-reason",
+      files = { "src/parser.c", "src/scanner.c" },
+      branch = "master",
+    },
+    filetype = "reason",
+  }
+
+  require("nvim-treesitter.configs").setup {
+    ensure_installed = {
+      "ocaml", "ocaml_interface", "odin", "rescript", "reason",
+      "typescript", "tsx", "javascript", "json",
+      "html", "css", "scss",
+      "lua", "vim", "vimdoc", "query",
+      "bash", "nix", "haskell", "markdown", "markdown_inline",
+      "git_config", "gitcommit", "diff",
+    },
+    sync_install = false,
+    auto_install = false,
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
+    -- Left off: `filetype indent off` + smartindent/cindent are set in Options.
+    indent = { enable = false },
+  }
 
   -- Telescope
   require("telescope").setup {

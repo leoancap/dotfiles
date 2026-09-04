@@ -130,6 +130,9 @@ export AHREFS_MONOREPO="$HOME/ahrefs/monorepo"
 
 export EDITOR=nvim
 
+# Reason: wrapping width for refmt (default is 80).
+export REFMT_PRINT_WIDTH=120
+
 # stty erase ^H
 
 
@@ -142,6 +145,7 @@ path=(
   $HOME/.opencode/bin                                 # opencode
   $HOME/.bin                                          # personal scripts
   $HOME/.local/bin                                    # pip --user apps
+  $HOME/apps                                          # cursor, lazygit, etc
   $HOME/languages/odin-linux-amd64-nightly+2026-08-06 # odin
   $HOME/languages/ols                                 # ols + odinfmt
   $path

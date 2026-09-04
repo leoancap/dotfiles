@@ -71,6 +71,7 @@ in
     displayManager.lightdm.enable = true;
     displayManager.sessionCommands = ''
       xset r rate 150 70
+      export PATH="$HOME/apps:$PATH"
     '';
     config = ''
       Section "InputClass"
@@ -195,6 +196,7 @@ in
     git
     gnumake
     hubstaff
+    ripgrep
     i3lock-color
     keychain
     koreader

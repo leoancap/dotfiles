@@ -32,6 +32,7 @@ myTerminal = "st"
 -- Apps
 file_manager = spawn "pcmanfm"
 web_browser = spawn "brave-browser"
+cursor_editor = spawn "/home/leo/apps/cursor"
 terminal_light= spawn "xrdb merge ~/.Xresources_light && kill -USR1 $(pidof st)"
 terminal_dark= spawn "xrdb merge ~/.Xresources_dark && kill -USR1 $(pidof st)"
 
@@ -73,6 +74,7 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       -- launch applications
       ((super .|. controlMask, xK_p), file_manager),
       ((super .|. controlMask, xK_f), web_browser),
+      ((super .|. controlMask, xK_e), cursor_editor),
       ((super .|. controlMask, xK_1), single_monitor),
       ((super .|. controlMask, xK_3), dual_monitor),
       ((super .|. controlMask, xK_4), single_eink),
@@ -124,14 +126,19 @@ myKeys conf@(XConfig {XMonad.modMask = super}) =
       ((super .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf),
       -- Move focus to the next window
       ((super, xK_Tab), windows W.focusDown),
-      ((super, xK_p), windows W.focusDown),
-      ((super, xK_n), windows W.focusUp),
+      --((super, xK_p), windows W.focusDown),
+      --((super, xK_n), windows W.focusUp),
       -- Swap windows
       ((super .|. shiftMask, xK_p), windows W.swapDown),
       ((super .|. shiftMask, xK_n), windows W.swapUp),
       -- Resize windows
       ((super .|. controlMask, xK_n), sendMessage Shrink),
       ((super .|. controlMask, xK_p), sendMessage Expand),
+      -- Cycle to the next/previous workspace
+      ((super, xK_n), nextWS),
+      ((super, xK_p), prevWS),
+      ((super .|. controlMask .|. shiftMask, xK_n), nextWS),
+      ((super .|. controlMask .|. shiftMask, xK_p), prevWS),
       -- Toggle between the current and the last visited workspace
       ((super, xK_o), toggleWS),
       -- Restart xmonad
