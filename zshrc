@@ -122,6 +122,8 @@ if command -v keychain &>/dev/null; then
 fi
 
 #
+eval $(opam env)
+
 
 # Ahrefs config
 export AHREFS_MONOREPO="$HOME/ahrefs/monorepo"

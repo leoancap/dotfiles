@@ -226,10 +226,16 @@ in
 
     # C 
     clang
+    clang-tools
     stdenv.cc
     fontconfig
     freetype
     harfbuzz
+
+    # OCaml
+    ocaml
+    dune
+    opam
 
    (retroarch.withCores (cores: with cores; [
       snes9x

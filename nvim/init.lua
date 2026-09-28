@@ -214,6 +214,14 @@ function Autocmds.setup()
   local fmt_group = vim.api.nvim_create_augroup("AutoFormat", { clear = true })
   
   vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.c",
+    callback = function()
+      vim.lsp.buf.format()
+    end,
+    group = fmt_group,
+  })
+
+  vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*.lua",
     command = "Neoformat",
     group = fmt_group,
@@ -706,6 +714,12 @@ function LSP.setup()
   -- Setup capabilities
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+  -- C LSP (clangd)
+  vim.lsp.config('clangd', {
+    capabilities = capabilities,
+  })
+  vim.lsp.enable('clangd')
+
   -- OCaml LSP
   vim.lsp.config('ocamllsp', {
     capabilities = capabilities,
@@ -844,6 +858,7 @@ function Plugins.setup()
 
   require("nvim-treesitter.configs").setup {
     ensure_installed = {
+      "c",
       "ocaml", "ocaml_interface", "odin", "rescript", "reason",
       "typescript", "tsx", "javascript", "json",
       "html", "css", "scss",
